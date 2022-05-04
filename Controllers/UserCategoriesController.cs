@@ -13,47 +13,47 @@ namespace ExamCRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserCategoriesController : ControllerBase
     {
         private readonly UserDBContext _context;
 
-        public UsersController(UserDBContext context)
+        public UserCategoriesController(UserDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/UserCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserCategory>>> GetUserCategories()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.UserCategories.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/UserCategories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserCategory>> GetUserCategory(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var userCategory = await _context.UserCategories.FindAsync(id);
 
-            if (user == null)
+            if (userCategory == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return userCategory;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/UserCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUserCategory(Guid id, UserCategory userCategory)
         {
-            if (id != user.Id)
+            if (id != userCategory.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(userCategory).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace ExamCRUD.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!UserCategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -74,36 +74,37 @@ namespace ExamCRUD.Controllers
             return new JsonResult("Updated Successfully");
         }
 
-        // POST: api/Users
+        // POST: api/UserCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserCategory>> PostUserCategory(UserCategory userCategory)
         {
-            _context.Users.Add(user);
+            _context.UserCategories.Add(userCategory);
             await _context.SaveChangesAsync();
 
+            //return CreatedAtAction("GetUserCategory", new { id = userCategory.id }, userCategory);
             return new JsonResult("Added Successfully");
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/UserCategories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUserCategory(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var userCategory = await _context.UserCategories.FindAsync(id);
+            if (userCategory == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.UserCategories.Remove(userCategory);
             await _context.SaveChangesAsync();
 
             return new JsonResult("Deleted Successfully");
         }
 
-        private bool UserExists(int id)
+        private bool UserCategoryExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.UserCategories.Any(e => e.id == id);
         }
     }
 }

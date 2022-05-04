@@ -13,47 +13,47 @@ namespace ExamCRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class MultiLevelUsersController : ControllerBase
     {
         private readonly UserDBContext _context;
 
-        public UsersController(UserDBContext context)
+        public MultiLevelUsersController(UserDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/MultiLevelUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MultiLevelUser>>> GetMultiLevelUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.MultiLevelUsers.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/MultiLevelUsers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<MultiLevelUser>> GetMultiLevelUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var multiLevelUser = await _context.MultiLevelUsers.FindAsync(id);
 
-            if (user == null)
+            if (multiLevelUser == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return multiLevelUser;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/MultiLevelUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutMultiLevelUser(Guid id, MultiLevelUser multiLevelUser)
         {
-            if (id != user.Id)
+            if (id != multiLevelUser.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(multiLevelUser).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace ExamCRUD.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!MultiLevelUserExists(id))
                 {
                     return NotFound();
                 }
@@ -74,36 +74,38 @@ namespace ExamCRUD.Controllers
             return new JsonResult("Updated Successfully");
         }
 
-        // POST: api/Users
+        // POST: api/MultiLevelUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<MultiLevelUser>> PostMultiLevelUser(MultiLevelUser multiLevelUser)
         {
-            _context.Users.Add(user);
+            _context.MultiLevelUsers.Add(multiLevelUser);
             await _context.SaveChangesAsync();
 
+            //return CreatedAtAction("GetMultiLevelUser", new { id = multiLevelUser.Id }, multiLevelUser);
             return new JsonResult("Added Successfully");
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/MultiLevelUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteMultiLevelUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var multiLevelUser = await _context.MultiLevelUsers.FindAsync(id);
+            if (multiLevelUser == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.MultiLevelUsers.Remove(multiLevelUser);
             await _context.SaveChangesAsync();
 
+            //return NoContent();
             return new JsonResult("Deleted Successfully");
         }
 
-        private bool UserExists(int id)
+        private bool MultiLevelUserExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.MultiLevelUsers.Any(e => e.Id == id);
         }
     }
 }

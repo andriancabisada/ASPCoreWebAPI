@@ -10,5 +10,11 @@ namespace ExamCRUD.Data
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<UserCategory> UserCategories { get; set; }
+
+        public DbSet<UserSubCategory> UserSubCategories { get; set; }
+
+        public DbSet<MultiLevelUser> MultiLevelUsers { get; set; }
     }
 }
